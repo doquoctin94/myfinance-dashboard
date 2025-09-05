@@ -77,9 +77,15 @@ export const useAccessToken = () => {
   return useQuery({
     queryKey: ['accessToken'],
     queryFn: () => {
-      console.log(typeof window)
       if (typeof window !== 'undefined') {
-        return document.cookie.split('; ').find(row => row.startsWith('accessToken='))?.split('=')[1] || sessionStorage.getItem('accessToken');
+        const accessToken = document.cookie.split('; ').find(row => row.startsWith('accessToken='))?.split('=')[1] || sessionStorage.getItem('accessToken');
+        if(!accessToken){
+          clearUserInfo();
+          document.cookie = '';
+          window.location.href = '/signin';
+          return null;
+        }
+        return accessToken;
       }
     },
   });

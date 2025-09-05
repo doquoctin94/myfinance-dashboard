@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { EcommerceMetrics } from "@/components/ecommerce/EcommerceMetrics";
+import { CustomerMetrics } from "@/components/home/CustomerMetrics";
 import React from "react";
-import MonthlyTarget from "@/components/ecommerce/MonthlyTarget";
-import MonthlySalesChart from "@/components/ecommerce/MonthlySalesChart";
-import StatisticsChart from "@/components/ecommerce/StatisticsChart";
-import RecentOrders from "@/components/ecommerce/RecentOrders";
-import DemographicCard from "@/components/ecommerce/DemographicCard";
+import MonthlyTarget from "@/components/home/MonthlyTarget";
+import MonthlySalesChart from "@/components/home/MonthlySalesChart";
+import StatisticsChart from "@/components/home/StatisticsChart";
+import RecentOrders from "@/components/home/RecentOrders";
+import DemographicCard from "@/components/home/DemographicCard";
 
 export const metadata: Metadata = {
   title:
@@ -13,11 +13,11 @@ export const metadata: Metadata = {
   description: "This is Next.js Home for TailAdmin Dashboard Template",
 };
 
-export default function Ecommerce() {
+export default function Home() {
   return (
     <div className="grid grid-cols-12 gap-4 md:gap-6">
       <div className="col-span-12 space-y-6 xl:col-span-7">
-        <EcommerceMetrics />
+        <CustomerMetrics />
 
         <MonthlySalesChart />
       </div>

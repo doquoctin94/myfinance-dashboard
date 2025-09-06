@@ -5,10 +5,8 @@ import React from "react";
 import UserTable from "./components/UserTable";
 
 export const metadata: Metadata = {
-  title: "Next.js Basic Table | TailAdmin - Next.js Dashboard Template",
-  description:
-    "This is Next.js Basic Table  page for TailAdmin  Tailwind CSS Admin Dashboard Template",
-  // other metadata
+  title: "MyFi AI - Danh sách người dùng",
+  description: "Danh sách người dùng",
 };
 
 export default function Users() {

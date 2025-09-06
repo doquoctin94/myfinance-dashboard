@@ -9,7 +9,7 @@ import DemographicCard from "@/components/home/DemographicCard";
 
 export const metadata: Metadata = {
   title:
-    "MyFi AI Dashboard | Sổ thu chi thông minh",
+    "MyFi AI - Sổ thu chi thông minh",
   description: "Trang quản lý thông tin MyFi AI",
 };
 

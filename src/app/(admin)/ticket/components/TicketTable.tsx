@@ -11,7 +11,7 @@ import {
 import Badge from "@/components/ui/badge/Badge";
 import Pagination from "@/components/tables/Pagination";
 import dayjs from "dayjs";
-import MenuAction from "@/components/ui/button/MenuAction";
+import MenuAction from "@/components/user/MenuAction";
 import { useTickets } from "@/hooks/ticket/useTickets";
 
 interface TicketType {

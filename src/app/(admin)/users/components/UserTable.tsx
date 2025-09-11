@@ -1,5 +1,5 @@
 "use client"
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import {
   Table,
   TableBody,
@@ -14,10 +14,11 @@ import Pagination from "@/components/tables/Pagination";
 import { useUsers } from "@/hooks/account/useUsers";
 import { getImageApp } from "@/common/helper";
 import dayjs from "dayjs";
-import MenuAction from "@/components/ui/button/MenuAction";
+import MenuAction from "@/components/user/MenuAction";
+import useCleanAllData from "@/hooks/account/useCleanAllData";
 
-interface UserType {
-  _id: number;
+export interface UserType {
+  _id: string;
   fullName: string;
   email: string;
   phone: string;
@@ -35,6 +36,7 @@ const LIMIT = 10;
 export default function UserTable() {
   const [currentPage, setCurrentPage] = useState(1);
   const { data: usersData } = useUsers({ page: currentPage, limit: LIMIT });
+  const { mutate: cleanAllData } = useCleanAllData();
 
   const users = useMemo<UserType[]>(() => {
     return usersData ? usersData.items : [];
@@ -43,6 +45,21 @@ export default function UserTable() {
   const total = useMemo(() => {
     return usersData ? usersData.total : 0;
   }, [usersData])
+
+  const onDetail = useCallback((user: UserType) => {
+    console.log(user);
+  }, []);
+
+  const onUpdate = useCallback((user: UserType) => {
+    console.log(user);
+  }, []);
+
+  const onDelete = useCallback((user: UserType) => {
+    const isConfirmed = confirm(`Bạn có chắc chắn muốn xoá ${user.fullName} này không?`);
+    if (isConfirmed) {
+      cleanAllData({ userId: user._id });
+    }
+  }, [cleanAllData]);
 
   return (
     <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
@@ -159,7 +176,7 @@ export default function UserTable() {
                   </Badge>
                 </TableCell>
                 <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                  < MenuAction />
+                  < MenuAction item={user} onDetail={onDetail} onUpdate={onUpdate} onDelete={onDelete} />
                 </TableCell>
               </TableRow>
             ))}

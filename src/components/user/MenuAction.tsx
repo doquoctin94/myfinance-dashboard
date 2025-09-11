@@ -1,8 +1,15 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { UserType } from "@/app/(admin)/users/components/UserTable";
+import { useState, useRef, useEffect, useCallback } from "react";
 
-export default function MenuAction() {
+type Props = {
+    item: UserType;
+    onDetail: (item: UserType) => void;
+    onUpdate: (item: UserType) => void;
+    onDelete: (item: UserType) => void;
+}
+export default function MenuAction({ item, onDetail, onUpdate, onDelete }: Props) {
     const [open, setOpen] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
 
@@ -18,6 +25,21 @@ export default function MenuAction() {
             document.removeEventListener("mousedown", handleClickOutside);
         };
     }, []);
+
+    const onDetailHandler = useCallback(() => {
+        onDetail(item);
+        setOpen(false);
+    }, [item, onDetail]);
+
+    const onUpdateHandler = useCallback(() => {
+        onUpdate(item);
+        setOpen(false);
+    }, [item, onUpdate]);
+
+    const onDeleteHandler = useCallback(() => {
+        onDelete(item);
+        setOpen(false);
+    }, [item, onDelete]);
 
     return (
         <div className="relative inline-block" ref={menuRef}>
@@ -38,22 +60,25 @@ export default function MenuAction() {
                 >
                     <button
                         className="w-full text-left px-3 py-2 rounded-md 
-                       hover:bg-gray-100 hover:text-gray-900
-                       dark:hover:bg-gray-700 dark:text-gray-200"
+                        hover:bg-gray-100 hover:text-gray-900
+                        dark:hover:bg-gray-700 dark:text-gray-200"
+                        onClick={onDetailHandler}
                     >
                         👉 Chi tiết
                     </button>
                     <button
                         className="w-full text-left px-3 py-2 rounded-md 
-                       hover:bg-gray-100 hover:text-gray-900
-                       dark:hover:bg-gray-700 dark:text-gray-200"
+                        hover:bg-gray-100 hover:text-gray-900
+                        dark:hover:bg-gray-700 dark:text-gray-200"
+                        onClick={onUpdateHandler}
                     >
                         ✏️ Cập nhật
                     </button>
                     <button
                         className="w-full text-left px-3 py-2 rounded-md text-red-600
-                       hover:bg-gray-100 hover:text-red-700
-                       dark:hover:bg-gray-700 dark:text-red-400 dark:hover:text-red-300"
+                        hover:bg-gray-100 hover:text-red-700
+                        dark:hover:bg-gray-700 dark:text-red-400 dark:hover:text-red-300"
+                        onClick={onDeleteHandler}
                     >
                         🗑 Xoá
                     </button>

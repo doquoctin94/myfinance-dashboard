@@ -16,6 +16,7 @@ import { getImageApp } from "@/common/helper";
 import dayjs from "dayjs";
 import MenuAction from "@/components/user/MenuAction";
 import useCleanAllData from "@/hooks/account/useCleanAllData";
+import { toast } from "react-toastify";
 
 export interface UserType {
   _id: string;
@@ -48,6 +49,7 @@ export default function UserTable() {
 
   const onDetail = useCallback((user: UserType) => {
     console.log(user);
+    toast.success(`Chi tiết người dùng ${user.fullName}`);
   }, []);
 
   const onUpdate = useCallback((user: UserType) => {

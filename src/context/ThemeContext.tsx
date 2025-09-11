@@ -4,6 +4,7 @@ import '@/interceptor/axios.interceptor';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import type React from "react";
 import { createContext, useState, useContext, useEffect } from "react";
+import { ToastContainer } from 'react-toastify';
 
 export const queryClient = new QueryClient({
   defaultOptions: {
@@ -56,6 +57,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
       <QueryClientProvider client={queryClient}>
         {children}
+        <ToastContainer />
       </QueryClientProvider>
     </ThemeContext.Provider>
   );

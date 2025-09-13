@@ -11,7 +11,6 @@ import {
 import Badge from "@/components/ui/badge/Badge";
 import Pagination from "@/components/tables/Pagination";
 import dayjs from "dayjs";
-import MenuAction from "@/components/user/MenuAction";
 import { useTickets } from "@/hooks/ticket/useTickets";
 
 interface TicketType {
@@ -123,7 +122,7 @@ export default function TicketTable() {
                   {user.createdAt ? dayjs(user.createdAt).format("DD/MM/YYYY HH:mm:ss") : "N/A"}
                 </TableCell>
                 <TableCell className="px-4 py-3 text-gray-500 text-center text-theme-sm dark:text-gray-400">
-                  < MenuAction />
+                  Test
                 </TableCell>
               </TableRow>
             ))}

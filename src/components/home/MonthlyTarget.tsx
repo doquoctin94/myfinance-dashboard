@@ -19,7 +19,7 @@ export default function MonthlyTarget() {
   const totalShowingAdmod = useMemo(() => countAds?.totalShowingAdmod || 0, [countAds]);
   const totalClickingAdmod = useMemo(() => countAds?.totalClickingAdmod || 0, [countAds]);
 
-  const series = [(totalShowingAdmod + totalClickingAdmod) / target * 100];
+  const series = [Math.round((totalShowingAdmod + totalClickingAdmod) / target) * 100];
 
   const options: ApexOptions = {
     colors: ["#465FFF"],

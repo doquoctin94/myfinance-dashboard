@@ -31,9 +31,15 @@ export interface UserType {
   inviteCodeForMe: string;
   proExpiredAt: Date;
   isCancelRequest: boolean;
+  fcmTokens: {
+    _id: string;
+    appVersion: string,
+    isRemind: boolean,
+    platform: string,
+  }[]
 }
 
-const LIMIT = 10;
+const LIMIT = 6;
 export default function UserTable() {
   const [currentPage, setCurrentPage] = useState(1);
   const { data: usersData } = useUsers({ page: currentPage, limit: LIMIT });
@@ -48,7 +54,6 @@ export default function UserTable() {
   }, [usersData])
 
   const onDetail = useCallback((user: UserType) => {
-    console.log(user);
     toast.success(`Chi tiết người dùng ${user.fullName}`);
   }, []);
 
@@ -80,7 +85,7 @@ export default function UserTable() {
                 isHeader
                 className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
               >
-                Điện thoại
+                Platform
               </TableCell>
               <TableCell
                 isHeader
@@ -123,65 +128,68 @@ export default function UserTable() {
 
           {/* Table Body */}
           <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
-            {users.map((user) => (
-              <TableRow key={user._id}>
-                <TableCell className="px-5 py-4 sm:px-6 text-start">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 overflow-hidden rounded-full">
-                      <Image
-                        width={40}
-                        height={40}
-                        src={getImageApp(user.avatar)}
-                        alt={user.fullName}
-                      />
+            {users.map((user) => {
+              const platform = user.fcmTokens.map(token => `${token.platform}${token.appVersion}${token.isRemind ? " (Đã nhắc)" : ""}`).join(", ");
+              return (
+                <TableRow key={user._id}>
+                  <TableCell className="px-5 py-4 sm:px-6 text-start">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 overflow-hidden rounded-full">
+                        <Image
+                          width={40}
+                          height={40}
+                          src={getImageApp(user.avatar)}
+                          alt="image-user"
+                        />
+                      </div>
+                      <div>
+                        <span className="block font-medium text-gray-800 text-theme-sm dark:text-white/90">
+                          {user.fullName}
+                        </span>
+                        <span className="block text-gray-500 text-theme-xs dark:text-gray-400">
+                          {user.email}
+                        </span>
+                      </div>
                     </div>
-                    <div>
-                      <span className="block font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                        {user.fullName}
-                      </span>
-                      <span className="block text-gray-500 text-theme-xs dark:text-gray-400">
-                        {user.email}
-                      </span>
-                    </div>
-                  </div>
-                </TableCell>
-                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                  {user.phone}
-                </TableCell>
-                <TableCell className="px-4 py-3 text-gray-500 text-center text-theme-sm dark:text-gray-400">
-                  {user.adsLevel}
-                </TableCell>
-                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                  <Badge
-                    size="sm"
-                    color={
-                      user.active ? "success" : "warning"
-                    }
-                  >
-                    {user.active ? "Active" : "Inactive"}
-                  </Badge>
-                </TableCell>
-                <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                  {user.proExpiredAt ? dayjs(user.proExpiredAt).format("DD/MM/YYYY HH:mm:ss") : "N/A"}
-                </TableCell>
-                <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                  {user.visitedAt ? dayjs(user.visitedAt).format("DD/MM/YYYY HH:mm:ss") : "N/A"}
-                </TableCell>
-                <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                  <Badge
-                    size="sm"
-                    color={
-                      user.isCancelRequest ? "error" : "success"
-                    }
-                  >
-                    {user.isCancelRequest ? "Có" : "Ko"}
-                  </Badge>
-                </TableCell>
-                <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                  < MenuAction item={user} onDetail={onDetail} onUpdate={onUpdate} onDelete={onDelete} />
-                </TableCell>
-              </TableRow>
-            ))}
+                  </TableCell>
+                  <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                    {platform}
+                  </TableCell>
+                  <TableCell className="px-4 py-3 text-gray-500 text-center text-theme-sm dark:text-gray-400">
+                    {user.adsLevel}
+                  </TableCell>
+                  <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                    <Badge
+                      size="sm"
+                      color={
+                        user.active ? "success" : "warning"
+                      }
+                    >
+                      {user.active ? "Active" : "Inactive"}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
+                    {user.proExpiredAt ? dayjs(user.proExpiredAt).format("DD/MM/YYYY HH:mm:ss") : "N/A"}
+                  </TableCell>
+                  <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
+                    {user.visitedAt ? dayjs(user.visitedAt).format("DD/MM/YYYY HH:mm:ss") : "N/A"}
+                  </TableCell>
+                  <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                    <Badge
+                      size="sm"
+                      color={
+                        user.isCancelRequest ? "error" : "success"
+                      }
+                    >
+                      {user.isCancelRequest ? "Có" : "Ko"}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
+                    < MenuAction item={user} onDetail={onDetail} onUpdate={onUpdate} onDelete={onDelete} />
+                  </TableCell>
+                </TableRow>
+              )
+            })}
           </TableBody>
         </Table>
 

@@ -4,6 +4,8 @@ import axios from "axios";
 
 axios.defaults.baseURL = 'https://api.myfiaivn.com/api/'
 
+// axios.defaults.baseURL = 'http://localhost:31001/api/'
+
 //if server response 401, redirect to login
 axios.interceptors.response.use(response => {
   return response;

@@ -16,10 +16,11 @@ export default function MonthlyTarget() {
   const { data: countAds } = useCountAds(startAt, endAt);
 
   const target = 200000;
-  const totalShowingAdmod = useMemo(() => countAds?.totalShowingAdmod || 0, [countAds]);
+  const totalInterstitialShowing = useMemo(() => countAds?.totalInterstitialShowing || 0, [countAds]);
+  const totalBannerShowing = useMemo(() => countAds?.totalBannerShowing || 0, [countAds]);
   const totalClickingAdmod = useMemo(() => countAds?.totalClickingAdmod || 0, [countAds]);
 
-  const series = [Math.round((totalShowingAdmod + totalClickingAdmod) / target) * 100];
+  const series = [Math.round((totalInterstitialShowing + totalBannerShowing + totalClickingAdmod) / target) * 100];
 
   const options: ApexOptions = {
     colors: ["#465FFF"],
@@ -94,17 +95,17 @@ export default function MonthlyTarget() {
           </div>
         </div>
         <p className="mx-auto mt-10 w-full max-w-[380px] text-center text-sm text-gray-500 sm:text-base">
-          Tháng này đã đạt được {totalShowingAdmod.toLocaleString()} lượt hiển thị và {totalClickingAdmod.toLocaleString()} lượt click, tổng cộng {totalShowingAdmod + totalClickingAdmod} lượt.
+          Tháng này đã đạt được {(totalBannerShowing + totalInterstitialShowing).toLocaleString()} lượt hiển thị và {totalClickingAdmod.toLocaleString()} lượt click, tổng cộng {totalInterstitialShowing + totalBannerShowing + totalClickingAdmod} lượt.
         </p>
       </div>
 
       <div className="flex items-center justify-center gap-5 px-6 py-3.5 sm:gap-8 sm:py-5">
         <div>
           <p className="mb-1 text-center text-gray-500 text-theme-xs dark:text-gray-400 sm:text-sm">
-            Mục tiêu
+            Banner
           </p>
           <p className="flex items-center justify-center gap-1 text-base font-semibold text-gray-800 dark:text-white/90 sm:text-lg">
-            {target.toLocaleString()}
+            {totalBannerShowing.toLocaleString()}
           </p>
         </div>
 
@@ -112,10 +113,10 @@ export default function MonthlyTarget() {
 
         <div>
           <p className="mb-1 text-center text-gray-500 text-theme-xs dark:text-gray-400 sm:text-sm">
-            Hiển thị
+            Interstitial
           </p>
           <p className="flex items-center justify-center gap-1 text-base font-semibold text-gray-800 dark:text-white/90 sm:text-lg">
-            {totalShowingAdmod.toLocaleString()}
+            {totalInterstitialShowing.toLocaleString()}
           </p>
         </div>
 

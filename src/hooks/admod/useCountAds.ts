@@ -5,7 +5,8 @@ import { useAccessToken } from "../account/useInfo";
 const useCountAds = (startAt: string, endAt: string) => {
   const { data: accessToken } = useAccessToken();
   return useQuery<{
-    totalShowingAdmod: number;
+    totalInterstitialShowing: number;
+    totalBannerShowing: number;
     totalClickingAdmod: number;
   }>({
     queryKey: ['count-ads'],

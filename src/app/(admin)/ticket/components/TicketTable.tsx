@@ -26,6 +26,7 @@ interface TicketType {
 
 const LIMIT = 10;
 export default function TicketTable() {
+  const [limit, setLimit] = useState(5);
   const [currentPage, setCurrentPage] = useState(1);
   const { data: ticketsData } = useTickets({ page: currentPage, limit: LIMIT });
 
@@ -131,10 +132,10 @@ export default function TicketTable() {
 
       </div>
       <Pagination
-        limit={LIMIT}
+        onLimitChange={setLimit}
         totalItems={total}
         currentPage={currentPage}
-        totalPages={total / LIMIT}
+        totalPages={total / limit}
         onPageChange={setCurrentPage}
       />
     </div>

@@ -6,7 +6,7 @@ import { useAccessToken } from './useInfo';
 export const useUsers = ({page, limit}: {page: number, limit: number}) => {
   const  {data: accessToken}  = useAccessToken();
   return useQuery({
-    queryKey: ['users', page],
+    queryKey: ['users', page, limit],
     queryFn: async () => {
       return axios.get('/v1/user', {
         headers: {

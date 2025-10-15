@@ -39,10 +39,10 @@ export interface UserType {
   }[]
 }
 
-const LIMIT = 6;
 export default function UserTable() {
+  const [limit, setLimit] = useState(5);
   const [currentPage, setCurrentPage] = useState(1);
-  const { data: usersData } = useUsers({ page: currentPage, limit: LIMIT });
+  const { data: usersData } = useUsers({ page: currentPage, limit: limit });
   const { mutate: cleanAllData } = useCleanAllData();
 
   const users = useMemo<UserType[]>(() => {
@@ -129,7 +129,7 @@ export default function UserTable() {
           {/* Table Body */}
           <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
             {users.map((user) => {
-              const platform = user.fcmTokens.map(token => `${token.platform}${token.appVersion}${token.isRemind ? " (Đã nhắc)" : ""}`).join(", ");
+              const platform = user.fcmTokens.map(token => `${token.platform === 'ios' ? '🍎' : '🟢'}${token.appVersion}${token.isRemind ? " (Đã nhắc)" : ""}`).join(", ");
               return (
                 <TableRow key={user._id}>
                   <TableCell className="px-5 py-4 sm:px-6 text-start">
@@ -169,10 +169,10 @@ export default function UserTable() {
                     </Badge>
                   </TableCell>
                   <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                    {user.proExpiredAt ? dayjs(user.proExpiredAt).format("DD/MM/YYYY HH:mm:ss") : "N/A"}
+                    {user.proExpiredAt ? dayjs(user.proExpiredAt).format("DD/MM/YY HH:mm:ss") : "N/A"}
                   </TableCell>
                   <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                    {user.visitedAt ? dayjs(user.visitedAt).format("DD/MM/YYYY HH:mm:ss") : "N/A"}
+                    {user.visitedAt ? dayjs(user.visitedAt).format("DD/MM/YY HH:mm:ss") : "N/A"}
                   </TableCell>
                   <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                     <Badge
@@ -195,10 +195,10 @@ export default function UserTable() {
 
       </div>
       <Pagination
-        limit={LIMIT}
+        onLimitChange={setLimit}
         totalItems={total}
         currentPage={currentPage}
-        totalPages={total / LIMIT}
+        totalPages={total / limit}
         onPageChange={setCurrentPage}
       />
     </div>

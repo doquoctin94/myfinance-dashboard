@@ -1,14 +1,18 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
+import Select from "../form/Select";
+import { ChevronDownIcon } from "@/icons";
 
 type PaginationProps = {
   currentPage: number;
   totalPages: number;
-  limit: number;
   totalItems: number;
   onPageChange: (page: number) => void;
+  onLimitChange: (limit: number) => void;
   siblingCount?: number; // số trang hiển thị xung quanh current (mặc định 1 => tổng 3)
+
 };
 
+const limitOptions = [5, 10, 20, 50, 100];
 const DOTS = "DOTS";
 
 function range(start: number, end: number): number[] {
@@ -64,11 +68,13 @@ export function usePagination({
 const Pagination: React.FC<PaginationProps> = ({
   currentPage,
   totalPages,
-  limit,
   totalItems,
   onPageChange,
+  onLimitChange,
   siblingCount = 1,
 }) => {
+  const [limit, setLimit] = useState(5);
+
   const safeTotalPages = Math.ceil(totalPages);
   const safeCurrent = Math.min(Math.max(1, Math.floor(currentPage)), Math.max(1, safeTotalPages || 1));
 
@@ -77,6 +83,16 @@ const Pagination: React.FC<PaginationProps> = ({
     currentPage: safeCurrent,
     siblingCount,
   });
+
+  const options = limitOptions.map((n) => ({
+    value: n.toString(),
+    label: `${n} / trang`,
+  }));
+
+  const onChangeLimit = useCallback((value: string) => {
+    setLimit(Number(value));
+    onLimitChange(Number(value));
+  }, [onLimitChange]);
 
   const onNext = useCallback(() => {
     if (safeCurrent < safeTotalPages) onPageChange(safeCurrent + 1);
@@ -112,6 +128,19 @@ const Pagination: React.FC<PaginationProps> = ({
     <div className="flex items-center p-4 justify-between flex-col md:flex-row">
       <div className="text-gray-500 dark:text-gray-400 text-sm">
         Bạn đang xem: {startItem}-{endItem} / {totalItems} &nbsp;·&nbsp; Trang {safeCurrent} / {safeTotalPages}
+      </div>
+
+      <div className="relative w-36">
+        <Select
+          options={options}
+          defaultValue={options.find((o) => o.value === limit.toString())?.value}
+          onChange={onChangeLimit}
+          placeholder="Chọn số lượng"
+          className="dark:bg-dark-900 text-sm"
+        />
+        <span className="absolute text-gray-500 -translate-y-1/2 pointer-events-none right-3 top-1/2 dark:text-gray-400">
+          <ChevronDownIcon size={16} />
+        </span>
       </div>
 
       <div className="flex items-center">
@@ -155,7 +184,7 @@ const Pagination: React.FC<PaginationProps> = ({
           {">>"}
         </button>
       </div>
-    </div>
+    </div >
   );
 };
 

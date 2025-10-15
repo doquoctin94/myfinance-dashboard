@@ -4,8 +4,8 @@ import React from "react";
 import MonthlyTarget from "@/components/home/MonthlyTarget";
 import MonthlySalesChart from "@/components/home/MonthlySalesChart";
 import StatisticsChart from "@/components/home/StatisticsChart";
-import RecentOrders from "@/components/home/RecentOrders";
 import DemographicCard from "@/components/home/DemographicCard";
+import PushNotiUser from "@/components/home/PushNotiUser";
 
 export const metadata: Metadata = {
   title:
@@ -35,7 +35,7 @@ export default function Home() {
       </div>
 
       <div className="col-span-12 xl:col-span-7">
-        <RecentOrders />
+        <PushNotiUser />
       </div>
     </div>
   );

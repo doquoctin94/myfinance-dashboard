@@ -8,11 +8,12 @@ const useSendNotiToUsers = () => {
 
   return useMutation({
     mutationKey: ['send-noti-to-users'],
-    mutationFn: async ({androidChecked, iosChecked, appVersion, title, content}: {androidChecked: boolean, iosChecked: boolean, appVersion: string, title: string, content: string}) => {
+    mutationFn: async ({androidChecked, iosChecked, updateAppChecked, appVersion, title, content}: {androidChecked: boolean, iosChecked: boolean, updateAppChecked: boolean, appVersion: string, title: string, content: string}) => {
       return axios.post(`/v1/firebase/send-noti-to-users`, {
         androidChecked,
         iosChecked,
         appVersion,
+        type: !updateAppChecked ? 'NORMAL' : 'UPGRADE',
         title,
         content,
       }, {

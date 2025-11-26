@@ -14,6 +14,7 @@ export default function PushNotiUser() {
 
   const [androidChecked, setAndroidChecked] = useState(false);
   const [iosChecked, setIosChecked] = useState(false);
+  const [updateAppChecked, setUpdateAppChecked] = useState(false);
   const [appVersion, setAppVersion] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -22,9 +23,9 @@ export default function PushNotiUser() {
     const confirm = window.confirm("Bạn muốn gửi thông báo đến cho người dùng?");
     if (confirm) {
       console.log("sendNotification", androidChecked, iosChecked, appVersion, title, content);
-      sendNotiToUsers({ androidChecked, iosChecked, appVersion, title, content });
+      sendNotiToUsers({ androidChecked, iosChecked, updateAppChecked, appVersion, title, content });
     }
-  }, [androidChecked, iosChecked, appVersion, title, content, sendNotiToUsers]);
+  }, [androidChecked, iosChecked, updateAppChecked, appVersion, title, content, sendNotiToUsers]);
 
   return (
     <ComponentCard title="Gửi thông báo cho user">
@@ -40,6 +41,13 @@ export default function PushNotiUser() {
             <Checkbox checked={iosChecked} onChange={setIosChecked} />
             <span className="block text-sm font-medium text-gray-700 dark:text-gray-400">
               IOS
+            </span>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <Checkbox checked={updateAppChecked} onChange={setUpdateAppChecked} />
+            <span className="block text-sm font-medium text-gray-700 dark:text-gray-400">
+              Update App
             </span>
           </div>
         </div>
